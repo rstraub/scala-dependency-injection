@@ -1,5 +1,9 @@
 package train
 
+import train.loading.{CraneController, TrainLoader}
+import train.shunting.{PointSwitcher, TrainCarCoupler, TrainShunter}
+import train.station.{TrainDispatch, TrainStation}
+
 object ManualDependencyInjection extends App {
   lazy val trainCarCoupler = new TrainCarCoupler()
   lazy val trainShunter = new TrainShunter(pointSwitcher, trainCarCoupler)
