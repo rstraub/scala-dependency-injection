@@ -1,4 +1,4 @@
-package trains
+package train
 
 object ManualDependencyInjection extends App {
   lazy val trainCarCoupler = new TrainCarCoupler()

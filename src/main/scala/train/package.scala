@@ -1,4 +1,4 @@
-package object trains {
+package object train {
   class PointSwitcher() {
     def switch(): Unit = println("switching")
   }

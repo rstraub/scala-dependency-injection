@@ -1,4 +1,4 @@
-package trains
+package train
 
 import com.softwaremill.macwire.wire
 
