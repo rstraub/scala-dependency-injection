@@ -1,4 +1,4 @@
-package train
+package train.injection.manual
 
 import train.loading.{CraneController, TrainLoader}
 import train.shunting.{PointSwitcher, TrainCarCoupler, TrainShunter}
