@@ -36,6 +36,8 @@ package object trains {
     def prepareAndDispatchNextTrain(): Unit = {
       println("preparing and dispatching next train")
       trainShunter.shunt()
+      trainLoader.load()
+      trainDispatch.dispatch()
     }
   }
 }

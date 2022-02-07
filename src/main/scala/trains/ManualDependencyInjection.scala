@@ -1,16 +1,18 @@
 package trains
 
 object ManualDependencyInjection extends App {
-  val trainCarCoupler = new TrainCarCoupler()
-  val pointSwitcher = new PointSwitcher()
-  val trainShunter = new TrainShunter(pointSwitcher, trainCarCoupler)
+  lazy val trainCarCoupler = new TrainCarCoupler()
+  lazy val trainShunter = new TrainShunter(pointSwitcher, trainCarCoupler)
+  // Causes nullpointer (without lazy), used before instantiated
+  lazy val pointSwitcher = new PointSwitcher()
 
-  val craneController = new CraneController()
-  val trainLoader = new TrainLoader(craneController, pointSwitcher)
+  lazy val craneController = new CraneController()
+  lazy val trainLoader = new TrainLoader(craneController, pointSwitcher)
 
-  val trainDispatch = new TrainDispatch()
+  lazy val trainDispatch = new TrainDispatch()
 
-  val trainStation = new TrainStation(trainShunter, trainLoader, trainDispatch)
+  lazy val trainStation =
+    new TrainStation(trainShunter, trainLoader, trainDispatch)
 
   trainStation.prepareAndDispatchNextTrain()
 }
