@@ -1,6 +1,6 @@
 # Scala Dependency Injection
 
-Breakable Toy to try out some ways of achieving dependency injection using idiomatic Scala.
+[Breakable Toy](https://scienceofcraftdotblog.wordpress.com/2021/02/28/breakable-toys/) to try out some ways of achieving dependency injection using idiomatic Scala.
 This project demonstrates the following ways:
 1. Manual Injection. Using new and lazy vals
 2. DI Framework with MacWire.
