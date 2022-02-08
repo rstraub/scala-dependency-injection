@@ -1,8 +1,9 @@
 package webapp.todo
 
+import cats.data.Reader
 import cats.implicits._
-import webapp.user.UserDomain
-import webapp.workitem.WorkItemDomain
+import webapp.user.{User, UserDomain, UserReaderService}
+import webapp.workitem.{WorkItemDomain, WorkItemReaderService}
 
 import java.util.UUID
 
@@ -42,4 +43,41 @@ object ToDoService {
       } yield todo
 
   }
+}
+
+object ToDoReaderService {
+  def getAllToDos: Reader[ToDoContext, Either[Exception, Seq[ToDo]]] = {
+    def getUser(uuid: UUID)(ctx: ToDoContext): Either[Exception, User] = UserReaderService.getUserById(uuid)(ctx)
+
+    Reader((ctx: ToDoContext) =>
+      for {
+        items <- WorkItemReaderService.getAllWorkItems(ctx)
+        users <- items.flatMap(_.assignedUserId).traverse(uuid => getUser(uuid)(ctx))
+        todos = items.map(item =>
+          ToDo(
+            id = item.id,
+            description = item.description,
+            due = item.due,
+            assignedUser = item.assignedUserId.flatMap(id => users.find(_.id == id))
+          )
+        )
+      } yield todos
+    )
+  }
+
+  def getToDoByUserId(userId: UUID): Reader[ToDoContext, Either[Exception, ToDo]] = Reader(ctx =>
+    for {
+      user <- UserReaderService.getUserById(userId)(ctx)
+      todo <- WorkItemReaderService
+        .getWorkItemByUserId(userId)(ctx)
+        .map(it =>
+          ToDo(
+            id = it.id,
+            description = it.description,
+            due = it.due,
+            assignedUser = Some(user)
+          )
+        )
+    } yield todo
+  )
 }
